@@ -18,12 +18,6 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v3
 
-      - name: Install Deno
-        uses: denoland/setup-deno@v1
-
-      - name: Build step
-        run: deno task build
-
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
