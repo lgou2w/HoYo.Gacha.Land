@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.187.0/http/server.ts'
 import { serveDir } from 'https://deno.land/std@0.187.0/http/file_server.ts'
+import * as genshinDict from './utilities/genshin-dict.ts'
 
 const metadata = JSON.stringify({
   id: 'com.lgou2w.hoyo.gacha',
@@ -10,9 +11,13 @@ const metadata = JSON.stringify({
 })
 
 async function handleRequest (req: Request): Promise<Response> {
+  const pathname = new URL(req.url).pathname
+
+  // Genshin Impact dictionary
+  const res = genshinDict.handleRequest(req, pathname)
+  if (res !== false) return res
 
   // Serve static files from public/ directory
-  const pathname = new URL(req.url).pathname
   if (pathname.startsWith('/static')) {
     return await serveDir(req, {
       fsRoot: 'public',
