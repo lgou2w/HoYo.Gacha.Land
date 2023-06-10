@@ -13,16 +13,20 @@ export async function handleRequest(
     })
   } else if (url.pathname === '/release/download') {
     const id = url.searchParams.get('id')
-    if (!id || !/^\d+$/.test(id)) {
+    if (!id || (id !== 'latest' && !/^\d+$/.test(id))) {
       return new Response('Illegal release id', { status: 400 })
     }
 
-    const releaseId = Number(id)
-    let release = releaseId === lastestRelease?.id && lastestRelease
-    if (!release) try {
-      release = await getReleaseById(releaseId)
-    } catch (e) {
-      return new Response(e.message, { status: 400 })
+    let release: typeof lastestRelease
+
+    if (id === 'latest' || Number(id) === lastestRelease?.id) {
+      release = lastestRelease || await getLatestRelease()
+    } else {
+      try {
+        release = await getReleaseById(Number(id))
+      } catch (e) {
+        return new Response(e.message, { status: 400 })
+      }
     }
 
     return await fetch(release.asset.download_url, {
