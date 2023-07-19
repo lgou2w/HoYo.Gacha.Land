@@ -1,5 +1,5 @@
 import { Octokit } from 'https://cdn.skypack.dev/@octokit/core@4?dts'
-import { restEndpointMethods } from 'https://cdn.skypack.dev/@octokit/plugin-rest-endpoint-methods@4?dts'
+import { restEndpointMethods } from 'https://cdn.skypack.dev/@octokit/plugin-rest-endpoint-methods@8?dts'
 
 const GitHubToken = Deno.env.get('GITHUB_TOKEN')
 if (!GitHubToken) {
