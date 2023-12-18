@@ -75,6 +75,8 @@
   "10000087": "UI_AvatarIcon_Neuvillette",
   "10000088": "UI_AvatarIcon_Charlotte",
   "10000089": "UI_AvatarIcon_Furina",
+  "10000090": "UI_AvatarIcon_Chevreuse",
+  "10000091": "UI_AvatarIcon_Navia",
 
   "11101": "UI_EquipIcon_Sword_Blunt",
   "11201": "UI_EquipIcon_Sword_Silver",
@@ -151,6 +153,7 @@
   "12504": "UI_EquipIcon_Claymore_Kunwu",
   "12510": "UI_EquipIcon_Claymore_Itadorimaru",
   "12511": "UI_EquipIcon_Claymore_Deshret",
+  "12512": "UI_EquipIcon_Claymore_GoldenVerdict",
   "13101": "UI_EquipIcon_Pole_Gewalt",
   "13201": "UI_EquipIcon_Pole_Rod",
   "13301": "UI_EquipIcon_Pole_Ruby",
