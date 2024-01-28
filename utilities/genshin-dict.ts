@@ -29,10 +29,10 @@ export function handleRequest (
   req: Request,
   pathname: string
 ): false | Response {
-  const execArray = /^\/static\/genshin\/(character|weapon)\/(.+)\.png$/.exec(pathname)
+  const execArray = /^\/static\/genshin\/(character|weapon)(\/cutted)?\/(.+)\.png$/.exec(pathname)
   if (!execArray) return false
 
-  const [, category, name] = execArray
+  const [, category, cutted, name] = execArray
   const decodedName = decodeURIComponent(name)
   const identifier = mappings[category]?.[decodedName]
   if (!identifier) return false
@@ -41,7 +41,7 @@ export function handleRequest (
     status: 302,
     headers: {
       ...req.headers,
-      'location': `/static/genshin/${category}/${identifier}.png`
+      'location': `/static/genshin/${category}/` + (cutted ? 'cutted/' : '') + `${identifier}.png`
     }
   })
 }
