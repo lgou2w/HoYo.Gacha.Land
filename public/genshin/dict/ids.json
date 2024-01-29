@@ -77,6 +77,8 @@
   "10000089": "UI_AvatarIcon_Furina",
   "10000090": "UI_AvatarIcon_Chevreuse",
   "10000091": "UI_AvatarIcon_Navia",
+  "10000092": "UI_AvatarIcon_Gaming",
+  "10000093": "UI_AvatarIcon_Liuyun",
 
   "11101": "UI_EquipIcon_Sword_Blunt",
   "11201": "UI_EquipIcon_Sword_Silver",
@@ -221,6 +223,7 @@
   "14512": "UI_EquipIcon_Catalyst_Alaya",
   "14513": "UI_EquipIcon_Catalyst_Wheatley",
   "14514": "UI_EquipIcon_Catalyst_Iudex",
+  "14515": "UI_EquipIcon_Catalyst_MountainGale",
   "15101": "UI_EquipIcon_Bow_Hunters",
   "15201": "UI_EquipIcon_Bow_Old",
   "15301": "UI_EquipIcon_Bow_Crowfeather",
