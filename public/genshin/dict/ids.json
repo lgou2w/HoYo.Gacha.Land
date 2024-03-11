@@ -79,6 +79,7 @@
   "10000091": "UI_AvatarIcon_Navia",
   "10000092": "UI_AvatarIcon_Gaming",
   "10000093": "UI_AvatarIcon_Liuyun",
+  "10000094": "UI_AvatarIcon_Chiori",
 
   "11101": "UI_EquipIcon_Sword_Blunt",
   "11201": "UI_EquipIcon_Sword_Silver",
@@ -121,6 +122,7 @@
   "11511": "UI_EquipIcon_Sword_Deshret",
   "11512": "UI_EquipIcon_Sword_Ayus",
   "11513": "UI_EquipIcon_Sword_Regalis",
+  "11514": "UI_EquipIcon_Sword_Needle",
   "12101": "UI_EquipIcon_Claymore_Aniki",
   "12201": "UI_EquipIcon_Claymore_Oyaji",
   "12301": "UI_EquipIcon_Claymore_Glaive",
@@ -178,6 +180,7 @@
   "13419": "UI_EquipIcon_Pole_Windvane",
   "13424": "UI_EquipIcon_Pole_Shanty",
   "13425": "UI_EquipIcon_Pole_Vorpal",
+  "13426": "UI_EquipIcon_Pole_Caduceus",
   "13427": "UI_EquipIcon_Pole_Mechanic",
   "13501": "UI_EquipIcon_Pole_Homa",
   "13502": "UI_EquipIcon_Pole_Dvalin",
