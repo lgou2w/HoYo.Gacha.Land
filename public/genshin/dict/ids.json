@@ -80,6 +80,7 @@
   "10000092": "UI_AvatarIcon_Gaming",
   "10000093": "UI_AvatarIcon_Liuyun",
   "10000094": "UI_AvatarIcon_Chiori",
+  "10000096": "UI_AvatarIcon_Arlecchino",
 
   "11101": "UI_EquipIcon_Sword_Blunt",
   "11201": "UI_EquipIcon_Sword_Silver",
@@ -189,6 +190,7 @@
   "13507": "UI_EquipIcon_Pole_Santika",
   "13509": "UI_EquipIcon_Pole_Narukami",
   "13511": "UI_EquipIcon_Pole_Deshret",
+  "13512": "UI_EquipIcon_Pole_BloodMoon",
   "14101": "UI_EquipIcon_Catalyst_Apprentice",
   "14201": "UI_EquipIcon_Catalyst_Pocket",
   "14301": "UI_EquipIcon_Catalyst_Intro",
