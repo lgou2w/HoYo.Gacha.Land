@@ -22,7 +22,7 @@
   <script>
     $('#submit').on('click', function (evt) {
       const files = $('#input').get(0).files;
-      if (!files) return;
+      if (!files || !files.length) return;
 
       const btn = $(this).text('转换中...').attr('disabled', true);
       const reader = new FileReader();
