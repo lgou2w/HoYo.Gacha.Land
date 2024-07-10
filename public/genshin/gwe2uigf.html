@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GWE2UIGF</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.11.11/dayjs.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <p>将 genshin-wish-export 记录数据文件转换为 UIGF v2.2 标准</p>
+    <div>
+      <label for="input">请选择要转换的文件：</label>
+      <input id="input" type="file" accept=".json" />
+    </div>
+    <div>
+      <button id="submit">转换</button>
+    </div>
+  </div>
+  <script>
+    $('#submit').on('click', function (evt) {
+      const files = $('#input').get(0).files;
+      if (!files) return;
+
+      const btn = $(this).text('转换中...').attr('disabled', true);
+      const reader = new FileReader();
+      reader.readAsText(files[0]);
+      reader.onload = function (evt) {
+        try {
+          convert(evt);
+        } catch (e) {
+          alert(`转换失败，请检查文件格式数据是否正确！\n\n${e.message || String(e)}`);
+        } finally {
+          btn.text('转换').removeAttr('disabled');
+        }
+      };
+    });
+
+    const UIGF_GACHA_TYPES = {
+      '100': '100',
+      '200': '200',
+      '301': '301',
+      '302': '302',
+      '400': '301',
+      '500': '500'
+    };
+
+    function fakeIdFn () {
+      let id = 1000000000000000000n
+      return function () {
+        id = id + 1n
+        return id.toString()
+      }
+    }
+
+    function convert (evt) {
+      const dirty = evt.target.result;
+      const rawData = JSON.parse(dirty);
+
+      const now = new Date();
+      const uigf = {
+        info: {
+          uid: rawData.uid,
+          lang: rawData.lang,
+          export_time: dayjs(now).format('YYYY-MM-DD HH:mm:ss'),
+          export_timestamp: Math.round(now.valueOf() / 1000),
+          export_app: 'com.lgou2w.hoyo.gacha',
+          export_app_version: 'v0.4.0',
+          uigf_version: 'v2.2',
+          region_time_zone: 8
+        },
+        list: []
+      };
+
+      const fakeId = fakeIdFn();
+      const list = [];
+      for (const [type, records] of rawData.result) {
+        for (const record of records) {
+          const gacha_type = record[4] || type;
+          list.push({
+            id: record[5] || fakeId(),
+            uid: rawData.uid,
+            gacha_type,
+            item_id: '',
+            count: '1',
+            time: record[0],
+            name: record[1],
+            lang: rawData.lang,
+            item_type: record[2],
+            rank_type: String(record[3]),
+            uigf_gacha_type: UIGF_GACHA_TYPES[gacha_type]
+          });
+        }
+      }
+
+      list.sort((a, b) => a.id - b.id);
+      uigf.list = list;
+
+      const output = JSON.stringify(uigf);
+      const blob = new Blob([output], { type: 'application/json;charset=utf-8' });
+
+      const uid = uigf.info.uid;
+      const datetime = dayjs(now).format('YYYYMMDD_HHmmss');
+      saveAs(blob, `UIGF_${uid}_${datetime}.json`);
+    }
+  </script>
+</body>
+</html>
