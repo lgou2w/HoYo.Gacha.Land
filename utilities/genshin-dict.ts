@@ -2,39 +2,51 @@ import * as path from 'https://deno.land/std@0.187.0/path/mod.ts'
 
 const dictDir = path.join(Deno.cwd(), 'public', 'genshin', 'dict')
 
-// Load index.json
-const indexFile = path.join(dictDir, 'index.json')
-const indexFileData = await Deno.readTextFile(indexFile)
-const mappings = JSON.parse(indexFileData) as Record<string, Record<string, string>>
+type Dict = Array<{
+  category: string,
+  category_name: string,
+  entries: Record<string, [string, number] | [string[], number]>
+}>
 
-/*
-// FIXME: Deprecated, as official resources are no longer used.
-//
-// // Load ids.json
-// const idsFile = path.join(dictDir, 'ids.json')
-// const idsFileData = await Deno.readTextFile(idsFile)
-// const ids = JSON.parse(idsFileData) as Record<string, string>
+// name -> id | id[]
+type Entries = Record<string, string>
+// category -> entries
+type Categories = Record<string, Entries>
+// lang -> category
+const dictMappings: Record<string, Categories> = {}
 
-// // Category -> miHoYo Category
-// const categoryMappings: Record<string, string> = {
-//   character: 'character_icon',
-//   weapon: 'equip'
-// }
-//
-// https://upload-bbs.mihoyo.com/game_record/genshin/${miHoYoCategory}/${idToName}.png
-//
-*/
+for await (const file of Deno.readDir(dictDir)) {
+  const idx = file.name.lastIndexOf('.')
+  if (idx !== -1) {
+    const lang = file.name.substring(0, idx)
+    const rawData = await Deno.readTextFile(path.join(dictDir, file.name))
+    const dict = JSON.parse(rawData) as Dict
+
+    const categories: Categories = {}
+    for (const category of dict) {
+      const entries: Entries = {}
+      for (const entry in category.entries) {
+        const [id, _rank] = category.entries[entry]
+        entries[entry] = typeof id === 'string' ? id : id[id.length - 1] // last
+      }
+      categories[category.category] = entries
+    }
+    dictMappings[lang] = categories
+  }
+}
+
+const DefaultLang = 'zh-cn'
 
 export function handleRequest (
   req: Request,
   pathname: string
 ): false | Response {
-  const execArray = /^\/static\/genshin\/(character|weapon)(\/cutted)?\/(.+)\.png$/.exec(pathname)
+  const execArray = /^\/static\/genshin(\/(.*))?\/(character|weapon)(\/cutted)?\/(.+)\.png$/.exec(pathname)
   if (!execArray) return false
 
-  const [, category, cutted, name] = execArray
+  const [,, lang = DefaultLang, category, cutted, name] = execArray
   const decodedName = decodeURIComponent(name)
-  const identifier = mappings[category]?.[decodedName]
+  const identifier = dictMappings[lang]?.[category]?.[decodedName]
   if (!identifier) return false
 
   return new Response(null, {
