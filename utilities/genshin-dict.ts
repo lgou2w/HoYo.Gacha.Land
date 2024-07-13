@@ -1,4 +1,4 @@
-import * as path from 'https://deno.land/std@0.187.0/path/mod.ts'
+import * as path from 'https://deno.land/std@0.224.0/path/mod.ts'
 
 const dictDir = path.join(Deno.cwd(), 'public', 'genshin', 'dict')
 

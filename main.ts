@@ -1,5 +1,5 @@
-import { serve } from 'https://deno.land/std@0.187.0/http/server.ts'
-import { serveDir } from 'https://deno.land/std@0.187.0/http/file_server.ts'
+import { serve } from 'https://deno.land/std@0.224.0/http/server.ts'
+import { serveDir } from 'https://deno.land/std@0.224.0/http/file_server.ts'
 import * as genshinDict from './utilities/genshin-dict.ts'
 import * as release from './utilities/release.ts'
 
