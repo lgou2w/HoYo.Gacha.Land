@@ -42,7 +42,7 @@ export async function handleRequest(
 const cratedAtStart = new Date('2023-05-01T00:00:00Z')
 
 // 5 minutes cache
-const releaseCacheTTL = 5 * 60 * 1000 // 5 minutes
+const releaseCacheTTL = 10 * 60 * 1000 // 10 minutes
 let lastReleaseCheck = 0
 let lastestRelease: {
   id: number
@@ -64,27 +64,21 @@ async function getLatestRelease(): Promise<typeof lastestRelease> {
   }
 
   console.debug('Fetching latest release...')
-  const { data: releases } = await octokit.rest.repos.listReleases({
+  const { data: latest } = await octokit.rest.repos.getLatestRelease({
     owner: 'lgou2w',
-    repo: 'HoYo.Gacha',
+    repo: 'HoYo.Gacha'
   })
 
-  const release = releases.filter((release) => {
-    const createdAt = new Date(release.created_at)
-    return createdAt >= cratedAtStart &&
-      release.assets.find((asset) => asset.name.endsWith('.exe'))
-  })[0]
-
-  if (!release) {
+  const asset = latest?.assets?.find((asset) => asset.name.endsWith('.exe'))
+  if (!latest || new Date(latest.created_at) < cratedAtStart || !asset) {
     throw new Error('No release found.')
   }
 
-  const asset = release.assets.find((asset) => asset.name.endsWith('.exe'))!
   lastestRelease = {
-    id: release.id,
-    tag_name: release.tag_name,
-    prerelease: release.prerelease,
-    created_at: release.created_at,
+    id: latest.id,
+    tag_name: latest.tag_name,
+    prerelease: latest.prerelease,
+    created_at: latest.created_at,
     asset: {
       name: asset.name,
       size: asset.size,
