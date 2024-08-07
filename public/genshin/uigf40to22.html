@@ -62,6 +62,11 @@
         throw new Error(`文件版本不匹配（预期：v4.0，实际：${version}）`);
       }
 
+      const hk4e = rawData.hk4e;
+      if (!hk4e || !Array.isArray(hk4e) || hk4e.length === 0) {
+        throw new Error(`文件数据的 'hk4e' 字段无效或空数组：${typeof hk4e}`);
+      }
+
       for (const account of rawData.hk4e) {
         const uid = account.uid;
         const now = new Date();
@@ -83,14 +88,14 @@
         for (const item of account.list) {
           const dict = DICT[item.item_id];
           if (!dict) {
-            throw new Error(`字典缺失物品 ID 条目名称：${item.item_id}`)
+            throw new Error(`字典缺失物品 ID 条目：${item.item_id}`);
           }
 
           list.push({
             id: item.id,
             uid,
             gacha_type: item.gacha_type,
-            item_id: '', // no need
+            item_id: '',
             count: item.count || '1',
             time: item.time,
             name: item.name || dict.name,
