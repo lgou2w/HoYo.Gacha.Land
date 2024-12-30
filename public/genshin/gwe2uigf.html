@@ -75,11 +75,11 @@
       };
 
       const fakeId = fakeIdFn();
-      const list = [];
+
       for (const [type, records] of rawData.result) {
         for (const record of records) {
           const gacha_type = record[4] || type;
-          list.push({
+          uigf.list.push({
             id: record[5] || fakeId(),
             uid: rawData.uid,
             gacha_type,
@@ -95,8 +95,7 @@
         }
       }
 
-      list.sort((a, b) => a.id - b.id);
-      uigf.list = list;
+      uigf.list.sort((a, b) => a.id - b.id);
 
       const output = JSON.stringify(uigf);
       const blob = new Blob([output], { type: 'application/json;charset=utf-8' });
