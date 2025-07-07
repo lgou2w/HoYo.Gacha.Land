@@ -48,6 +48,7 @@ let lastestRelease: {
   id: number
   tag_name: string
   created_at: string
+  prerelease: boolean
   asset: {
     name: string
     size: number
@@ -81,6 +82,7 @@ async function getLatestRelease(): Promise<typeof lastestRelease> {
     id: latest.id,
     tag_name: latest.tag_name,
     created_at: latest.created_at,
+    prerelease: false,
     asset: {
       name: asset.name,
       size: asset.size,
@@ -105,6 +107,7 @@ async function getReleaseById(id: number): Promise<typeof lastestRelease> {
     id: release.id,
     tag_name: release.tag_name,
     created_at: release.created_at,
+    prerelease: false,
     asset: {
       name: asset.name,
       size: asset.size,
