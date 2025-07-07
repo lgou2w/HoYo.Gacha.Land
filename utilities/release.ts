@@ -69,7 +69,7 @@ async function getLatestRelease(): Promise<typeof lastestRelease> {
   })
 
   const latest = releases?.find((release) => {
-    return !release.prerelease && new Date(latest.created_at) < cratedAtStart
+    return !release.prerelease && new Date(release.created_at) < cratedAtStart
   })
 
   const asset = latest?.assets?.find((asset) => asset.name.endsWith('.exe'))
