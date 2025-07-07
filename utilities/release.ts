@@ -47,7 +47,6 @@ let lastReleaseCheck = 0
 let lastestRelease: {
   id: number
   tag_name: string
-  prerelease: boolean
   created_at: string
   asset: {
     name: string
@@ -64,20 +63,23 @@ async function getLatestRelease(): Promise<typeof lastestRelease> {
   }
 
   console.debug('Fetching latest release...')
-  const { data: latest } = await octokit.rest.repos.getLatestRelease({
+  const { data: releases } = await octokit.rest.repos.listReleases({
     owner: 'lgou2w',
     repo: 'HoYo.Gacha'
   })
 
+  const latest = releases?.find((release) => {
+    return !release.prerelease && new Date(latest.created_at) < cratedAtStart
+  })
+
   const asset = latest?.assets?.find((asset) => asset.name.endsWith('.exe'))
-  if (!latest || new Date(latest.created_at) < cratedAtStart || !asset) {
+  if (!latest || !asset) {
     throw new Error('No release found.')
   }
 
   lastestRelease = {
     id: latest.id,
     tag_name: latest.tag_name,
-    prerelease: latest.prerelease,
     created_at: latest.created_at,
     asset: {
       name: asset.name,
@@ -102,7 +104,6 @@ async function getReleaseById(id: number): Promise<typeof lastestRelease> {
   return {
     id: release.id,
     tag_name: release.tag_name,
-    prerelease: release.prerelease,
     created_at: release.created_at,
     asset: {
       name: asset.name,
